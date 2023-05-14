@@ -1,0 +1,11 @@
+{
+  "name": "bspn-event-extract",
+  "version": "0.1.0",
+  "description": "BSPN event data extraction process.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Danny Baggett <danny.h.baggett@gmail.com>",
+  "license": "ISC"
+}

@@ -37,11 +37,11 @@ export interface Content {
 }
 
 export interface Teams {
-  away: Away;
-  home: Away;
+  away: Team;
+  home: Team;
 }
 
-export interface Away {
+export interface Team {
   leagueRecord: LeagueRecord;
   score:        number;
   team:         Venue;

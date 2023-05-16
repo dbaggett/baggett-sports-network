@@ -11,7 +11,22 @@ export interface GameData {
 }
 
 export interface LiveData {
+  linescore: LineScore
   boxscore: BoxScore
+}
+
+export interface LineScore {
+  teams: LineScoreTeams
+}
+
+export interface LineScoreTeams {
+  away: LineScoreTeam
+  home: LineScoreTeam
+}
+
+export interface LineScoreTeam {
+  goals: number
+  shotsOnGoal: number
 }
 
 export interface BoxScore {
@@ -24,8 +39,15 @@ export interface BoxScoreTeams {
 }
 
 export interface BoxScoreTeam {
+  team: Team
   teamStats: TeamStats
   players: TeamPlayers
+}
+
+export interface Team {
+  id: number
+  name: string
+  abbreviation: string
 }
 
 export interface TeamStats {
@@ -47,7 +69,7 @@ export interface Player {
   person: Person
   jerseyNumber: number
   position: PlayerPosition
-  stats: Stats
+  stats: PlayerStats
 }
 
 export interface Person {

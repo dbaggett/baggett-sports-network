@@ -1,0 +1,57 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - "POSTGRES_PASSWORD=password"
+      - "PGPASSWORD=password"
+    ports:
+    - "127.0.0.1:5432:5432"
+    restart: always
+    networks:
+      - backend
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    - ./infrastructure/database/init.sql:/docker-entrypoint-initdb.d/bootstrap-tracking.sql
+  migration:
+    image: flyway/flyway
+    environment:
+      - "FLYWAY_URL=jdbc:postgresql://postgres:5432/tracking"
+      - "FLYWAY_USER=postgres"
+      - "FLYWAY_PASSWORD=password"
+      - "FLYWAY_SCHEMAS=tracking"
+    command: -connectRetries=60 migrate
+    volumes:
+      - $PWD/infrastructure/database/migrations:/flyway/sql
+    depends_on:
+      - postgres
+    networks:
+      - backend
+  bspn-api:
+    build:
+      context: .
+    ports:
+    - "127.0.0.1:8020:8020"
+    networks:
+      - backend
+    depends_on:
+      - postgres
+  graphql-engine:
+    image: hasura/graphql-engine:v2.25.0
+    ports:
+    - "8080:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:password@postgres:5432/tracking
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+    networks:
+      - backend
+networks:
+  frontend:
+  backend:
+volumes:
+  db_data:

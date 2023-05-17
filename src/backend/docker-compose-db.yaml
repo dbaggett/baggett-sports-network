@@ -11,7 +11,7 @@ services:
     networks:
       - backend
     volumes:
-    - db_data:/var/lib/postgresql/data
+    - db_data_test:/var/lib/postgresql/data
     - ./database/init.sql:/docker-entrypoint-initdb.d/bootstrap-tracking.sql
   migration:
     image: flyway/flyway
@@ -22,27 +22,13 @@ services:
       - "FLYWAY_SCHEMAS=tracking"
     command: -connectRetries=60 migrate
     volumes:
-      - $PWD/database/migrations:/flyway/sql
+      - $PWD/infrastructure/database/migrations:/flyway/sql
     depends_on:
       - postgres
-    networks:
-      - backend
-  graphql-engine:
-    image: hasura/graphql-engine:v2.25.0
-    ports:
-    - "8080:8080"
-    depends_on:
-    - "postgres"
-    restart: always
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:password@postgres:5432/tracking
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
     networks:
       - backend
 networks:
   frontend:
   backend:
 volumes:
-  db_data:
+  db_data_test:

@@ -1,13 +1,13 @@
-import { Game } from "../../model/nhl/schedule.js";
+import { Game } from "../../../model/nhl/schedule.js";
 import { sequelize } from "../static/data.js";
-import { LiveEventRecord } from "../../model/data/common/live_event.js";
+import { LiveEventRecord } from "../../../model/data/common/live_event.js";
 
 /**
  * Upsert scheduled event (game).
  * 
  * @param game 
  */
-export async function upsertScheduledEvents(game: Game) {
+export async function upsertScheduledEvent(game: Game) {
   const result = await sequelize.query(
     `BEGIN;
 
@@ -118,4 +118,23 @@ export async function upsertLiveEventRecord(liveEventRecord: LiveEventRecord) {
       }
     }
   )
+}
+
+export async function retrieveActiveEvents(league: string) {
+  const result = await sequelize.query(
+    `SELECT
+      reference_number,
+      status,
+      league
+    FROM tracking.event
+    WHERE league = :league AND status = 'Live'
+    `,
+    {
+      replacements: {
+        league
+      }
+    }
+  )
+
+  return result[0]
 }

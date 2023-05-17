@@ -1,0 +1,9 @@
+{
+  "type": "create_cron_trigger",
+  "args": {
+    "name": "event-extract",
+    "webhook": "http://bspn-api:8020/event-extract",
+    "schedule": "* * * * *",
+    "include_in_metadata": false
+  } 
+}

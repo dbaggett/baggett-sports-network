@@ -1,14 +1,14 @@
 import got from 'got'
 import { LiveGame, PlayerStats } from '../model/nhl/game.js'
-import { EventContext } from '../model/event_context.js';
 import { TeamPlayers } from '../model/nhl/game.js';
 import { BoxScoreTeam } from '../model/nhl/game.js';
-import { upsertLiveEventRecord } from '../database/tracking/repository.js';
+import { upsertLiveEventRecord } from '../infrastructure/database/tracking/repository.js';
+import { LiveEventRecord } from '../model/data/common/live_event.js';
 
-export async function extractEventData(context: EventContext) {
-  if (context.referenceNumber) {
+export async function extractEventData(eventId: string, league: string) {
+  if (league == 'NHL') {
     const liveData: LiveGame = JSON.parse((await got({
-      url: `https://statsapi.web.nhl.com/api/v1/game/${context.referenceNumber}/feed/live`,
+      url: `https://statsapi.web.nhl.com/api/v1/game/${eventId}/feed/live`,
       method: 'GET'
     })).body)
 
@@ -55,35 +55,40 @@ export async function extractEventData(context: EventContext) {
           pim += stats?.pim || stats?.penaltyMinutes || 0
         }
 
-        await upsertLiveEventRecord(
-          {
-            id: liveData.gamePk.toString(),
-            status: liveData.gameData.status.abstractGameState,
-            team: {
-              external_id: team.team.id,
-              name: team.team.name,
-              abbreviation: team.team.abbreviation,
-              league: 'NHL',
-              goals: teamGoals
-            },
-            player: {
-              external_id: player.person.id,
-              name: player.person.fullName,
-              age: playerRecord.people[0].currentAge as number,
-              number: player.jerseyNumber,
-              designation: player.position.type,
-              stats: {
-                goals: goals,
-                hits: hits,
-                assists: assists,
-                pim: pim
-              }
+        const record: LiveEventRecord = {
+          id: liveData.gamePk.toString(),
+          status: liveData.gameData.status.abstractGameState,
+          team: {
+            external_id: team.team.id,
+            name: team.team.name,
+            abbreviation: team.team.abbreviation || '',
+            league: 'NHL',
+            goals: teamGoals
+          },
+          player: {
+            external_id: player.person.id,
+            name: player.person.fullName,
+            age: playerRecord.people[0].currentAge as number || 0,
+            number: player.jerseyNumber || 0,
+            designation: player.position.type,
+            stats: {
+              goals: goals,
+              hits: hits,
+              assists: assists,
+              pim: pim
             }
           }
-        )
+        } 
+
+        try {
+          console.log(`Upserting event ${record.id} for player ${record.player.external_id} on team ${record.team.external_id}`)
+          await upsertLiveEventRecord(record)
+        } catch (e) {
+          console.log(`Error upserting event ${record.id} for player ${record.player.external_id} on team ${record.team.external_id}: ${e}`)
+        }
       }
     }
   } else {
-    console.log('Missing event number')
+    console.log(`League ${league} not supported yet`)
   }
 }

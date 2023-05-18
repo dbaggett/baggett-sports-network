@@ -2,6 +2,8 @@
 import { StartedDockerComposeEnvironment } from 'testcontainers'
 import { createContainers } from './utils/testContainers'
 import { StartedGenericContainer } from 'testcontainers/dist/src/generic-container/started-generic-container'
+import { app } from '../application'
+import supertest from 'supertest'
 
 var environment: StartedDockerComposeEnvironment
 var db: StartedGenericContainer

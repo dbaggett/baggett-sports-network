@@ -12,7 +12,7 @@ services:
       - backend
     volumes:
     - db_data_test:/var/lib/postgresql/data
-    - ./database/init.sql:/docker-entrypoint-initdb.d/bootstrap-tracking.sql
+    - ./infrastructure/database/init.sql:/docker-entrypoint-initdb.d/bootstrap-tracking.sql
   migration:
     image: flyway/flyway
     environment:

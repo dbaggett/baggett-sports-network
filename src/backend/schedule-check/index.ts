@@ -1,6 +1,7 @@
 import got from 'got'
 import { Schedule } from '../model/nhl/schedule.js'
-import { upsertScheduledEvent } from '../infrastructure/database/tracking/repository.js';
+import { upsertQueuedEvent, upsertScheduledEvent } from '../infrastructure/database/tracking/repository.js';
+import { setScheduledEvent } from '../infrastructure/hasura/api/metadata.js';
 
 export async function checkSchedule(scheduleOptions: ScheduleOptions = {}) {
   const scheduleFeed = await got({
@@ -12,12 +13,21 @@ export async function checkSchedule(scheduleOptions: ScheduleOptions = {}) {
     }
   })
 
+  console.log(scheduleOptions)
+
   const schedule: Schedule = JSON.parse(scheduleFeed.body)
 
   for (const date of schedule.dates) {
     for (const game of date.games) {
-      console.log(`Upserting scheduled event ${game.gamePk}`)
-      await upsertScheduledEvent(game)
+      if (scheduleOptions.season !== undefined || scheduleOptions.date !== undefined) {
+        await upsertQueuedEvent(game)
+      } else {
+        // Upsert event for tracking
+        await upsertScheduledEvent(game)
+
+        // Set scheduled event for continued processing
+        await setScheduledEvent(game.gamePk.toString())
+      }
     }
   }
 }

@@ -21,5 +21,5 @@ describe("Environment", () => {
 })
 
 afterAll(async () => {
-  await environment.down()
+  await environment.down({timeout: 30000})
 }, 20000)

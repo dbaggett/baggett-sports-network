@@ -1,20 +1,23 @@
 import express, { Request, Response } from "express"
 import { checkSchedule, ScheduleOptions } from "./schedule-check/index.js"
 import { extractEventData } from "./event-extract/index.js";
-import { retrieveActiveEvents } from "./infrastructure/database/tracking/repository.js";
+import { retrieveQueuedEvents } from "./infrastructure/database/tracking/repository.js";
 
 export const app = express()
 
 app.use(express.json())
 
+/**
+ * Checks live event schedule and stages events for future processing.
+ */
 app.post('/schedule-check', async (req: Request, res: Response) => {
   try {
     const scheduleOptions: ScheduleOptions = {
-      date: req.query.date as string || '',
-      season: req.query.season as string || ''
+      date: req.query.date as string,
+      season: req.query.season as string
     }
 
-    const result = await checkSchedule(scheduleOptions);
+    await checkSchedule(scheduleOptions);
 
     res.status(204).send()
   } catch (err) {
@@ -24,16 +27,19 @@ app.post('/schedule-check', async (req: Request, res: Response) => {
   
 })
 
-app.post('/event-extract', async (req: Request, res: Response) => {
+/**
+ * Search from queued events placed into the database by retro active
+ * schedule checks i.e. by season or specific date.
+ */
+app.post('/event-extraction', async (req: Request, res: Response) => {
   try {
-    const activeEvents = await retrieveActiveEvents(req.query.league as string || 'NHL');
+    const queuedEvents = await retrieveQueuedEvents(req.query.league as string || 'NHL');
 
-    const events = activeEvents as { reference_number: string, league: string, status: string }[]
+    console.log(`Extracting data for ${queuedEvents.length} events`)
 
-    console.log(`Extracting data for ${events.length} events`)
-
-    await Promise.all(events.map(async (event) => {
-      await extractEventData(event.reference_number, event.league)
+    // Process all events concurrently
+    await Promise.all(queuedEvents.map(async (event) => {
+      await extractEventData(event.reference_number, event.league, true)
     }))
 
     res.status(204).send()
@@ -43,11 +49,15 @@ app.post('/event-extract', async (req: Request, res: Response) => {
   }
 })
 
+/**
+ * Extracts live event data for a specific event.
+ */
 app.post('/events/:referenceNumber', async (req: Request, res: Response) => {
   try {
     const referenceNumber = req.params.referenceNumber
 
-    const result = await extractEventData(referenceNumber, 'NHL')
+    // Extract event, team and player information
+    await extractEventData(referenceNumber, 'NHL')
 
     res.status(204).send()
   } catch (err) {

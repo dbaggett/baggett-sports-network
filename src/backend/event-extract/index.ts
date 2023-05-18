@@ -4,8 +4,10 @@ import { TeamPlayers } from '../model/nhl/game.js';
 import { BoxScoreTeam } from '../model/nhl/game.js';
 import { upsertLiveEventRecord } from '../infrastructure/database/tracking/repository.js';
 import { LiveEventRecord } from '../model/data/common/live_event.js';
+import { removeQueuedEvent } from '../infrastructure/database/tracking/repository.js';
+import { setScheduledEvent } from '../infrastructure/hasura/api/metadata.js';
 
-export async function extractEventData(eventId: string, league: string) {
+export async function extractEventData(eventId: string, league: string, isQueued: boolean = false) {
   if (league == 'NHL') {
     const liveData: LiveGame = JSON.parse((await got({
       url: `https://statsapi.web.nhl.com/api/v1/game/${eventId}/feed/live`,
@@ -32,6 +34,7 @@ export async function extractEventData(eventId: string, league: string) {
       for (const playerId of playerIds) {
         const player = players[playerId as keyof TeamPlayers]
 
+        // Pull player info for age
         const playerRecord = JSON.parse(
           (await got({
             url: `https://statsapi.web.nhl.com/api/v1/people/${player.person.id}`,
@@ -87,6 +90,16 @@ export async function extractEventData(eventId: string, league: string) {
           console.log(`Error upserting event ${record.id} for player ${record.player.external_id} on team ${record.team.external_id}: ${e}`)
         }
       }
+    }
+
+    // If the event is not final, schedule it for processing again
+    if (liveData.gameData.status.abstractGameState != 'Final') {
+      await setScheduledEvent(eventId)
+    }
+
+    // If this event has been queued, remove it from the queue
+    if (isQueued) {
+      await removeQueuedEvent(liveData.gamePk.toString(), 'NHL')
     }
   } else {
     console.log(`League ${league} not supported yet`)

@@ -10,6 +10,11 @@ services:
     restart: always
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
     - db_data:/var/lib/postgresql/data
     - ./infrastructure/database/init.sql:/docker-entrypoint-initdb.d/bootstrap-tracking.sql
@@ -30,6 +35,12 @@ services:
   bspn-api:
     build:
       context: .
+    environment:
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_USERNAME=postgres"
+      - "POSTGRES_HOST=postgres"
+      - "POSTGRES_PORT=5432"
+      - "POSTGRES_DATABASE=tracking"
     ports:
     - "127.0.0.1:8020:8020"
     networks:
@@ -39,15 +50,21 @@ services:
   graphql-engine:
     image: hasura/graphql-engine:v2.25.0
     ports:
-    - "8080:8080"
+    - "127.0.0.1:8080:8080"
     depends_on:
-    - "postgres"
+    - "migration"
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:password@postgres:5432/tracking
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
     networks:
       - backend
 networks:

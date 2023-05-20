@@ -8,7 +8,7 @@ export async function setScheduledEvent(eventId: string) {
 
   // Create a scheduled event for 1 minute in the future
   await got({
-    url: 'http://graphql-engine:8080/v1/metadata',
+    url: process.env.HASURA_METADATA_URL || 'http://graphql-engine:8080/v1/metadata',
     method: 'POST',
     json: {
       type: 'create_scheduled_event',

@@ -1,4 +1,4 @@
-import { Status } from "./status.js"
+import { Status } from "./status"
 
 export interface LiveGame {
   gamePk: number;

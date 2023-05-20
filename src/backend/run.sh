@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker-compose -f docker-compose-e2e.yaml up -d
+docker-compose -f docker-compose-e2e.yaml up -d --wait
 
 echo 'Waiting for hasura...'
 hasura_status=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8080/healthz)

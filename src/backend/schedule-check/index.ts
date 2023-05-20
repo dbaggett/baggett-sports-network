@@ -1,11 +1,11 @@
 import got from 'got'
-import { Schedule } from '../model/nhl/schedule.js'
-import { upsertQueuedEvent, upsertScheduledEvent } from '../infrastructure/database/tracking/repository.js';
-import { setScheduledEvent } from '../infrastructure/hasura/api/metadata.js';
+import { Schedule } from '../model/nhl/schedule'
+import { upsertQueuedEvent, upsertScheduledEvent } from '../infrastructure/database/tracking/repository';
+import { setScheduledEvent } from '../infrastructure/hasura/api/metadata';
 
 export async function checkSchedule(scheduleOptions: ScheduleOptions = {}) {
   const scheduleFeed = await got({
-    url: `https://statsapi.web.nhl.com/api/v1/schedule`,
+    url: process.env.NHL_SCHEDULE_URL || `https://statsapi.web.nhl.com/api/v1/schedule`,
     method: 'GET',
     searchParams: {
       date: scheduleOptions.date,

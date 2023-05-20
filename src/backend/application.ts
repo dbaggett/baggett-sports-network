@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
-import { checkSchedule, ScheduleOptions } from "./schedule-check/index.js"
-import { extractEventData } from "./event-extract/index.js";
-import { retrieveQueuedEvents } from "./infrastructure/database/tracking/repository.js";
+import { checkSchedule, ScheduleOptions } from "./schedule-check/index"
+import { extractEventData } from "./event-extract/index";
+import { retrieveQueuedEvents } from "./infrastructure/database/tracking/repository";
 
 export const app = express()
 

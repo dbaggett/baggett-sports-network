@@ -1,0 +1,168 @@
+{
+  "uuid": "ea9dfce4-88f5-4c90-80ad-5a120dedc90d",
+  "lastMigration": 27,
+  "name": "Nhl mock",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "7f3fcfec-bd5a-4849-95ed-affc80ce88b9",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/v1/schedule",
+      "responses": [
+        {
+          "uuid": "2907bc9a-099a-4936-bf05-de039ba8858f",
+          "body": "{\n    \"copyright\": \"NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. © NHL 2023. All Rights Reserved.\",\n    \"totalItems\": 1,\n    \"totalEvents\": 0,\n    \"totalGames\": 1,\n    \"totalMatches\": 0,\n    \"metaData\": {\n        \"timeStamp\": \"20230519_231930\"\n    },\n    \"wait\": 10,\n    \"dates\": [\n        {\n            \"date\": \"2023-05-19\",\n            \"totalItems\": 1,\n            \"totalEvents\": 0,\n            \"totalGames\": 1,\n            \"totalMatches\": 0,\n            \"games\": [\n                {\n                    \"gamePk\": 2022030321,\n                    \"link\": \"/api/v1/game/2022030321/feed/live\",\n                    \"gameType\": \"P\",\n                    \"season\": \"20222023\",\n                    \"gameDate\": \"2023-05-20T00:30:00Z\",\n                    \"status\": {\n                        \"abstractGameState\": \"Preview\",\n                        \"codedGameState\": \"1\",\n                        \"detailedState\": \"Scheduled\",\n                        \"statusCode\": \"1\",\n                        \"startTimeTBD\": false\n                    },\n                    \"teams\": {\n                        \"away\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 5,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 25,\n                                \"name\": \"Dallas Stars\",\n                                \"link\": \"/api/v1/teams/25\"\n                            }\n                        },\n                        \"home\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 3,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 54,\n                                \"name\": \"Vegas Golden Knights\",\n                                \"link\": \"/api/v1/teams/54\"\n                            }\n                        }\n                    },\n                    \"venue\": {\n                        \"id\": 5178,\n                        \"name\": \"T-Mobile Arena\",\n                        \"link\": \"/api/v1/venues/5178\"\n                    },\n                    \"content\": {\n                        \"link\": \"/api/v1/game/2022030321/content\"\n                    }\n                }\n            ],\n            \"events\": [],\n            \"matches\": []\n        }\n    ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "result",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "2d9bf7d6-dac7-4909-9dc3-af25d452501e",
+          "body": "{\n    \"copyright\": \"NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. © NHL 2023. All Rights Reserved.\",\n    \"totalItems\": 1,\n    \"totalEvents\": 0,\n    \"totalGames\": 1,\n    \"totalMatches\": 0,\n    \"metaData\": {\n        \"timeStamp\": \"20230519_231930\"\n    },\n    \"wait\": 10,\n    \"dates\": [\n        {\n            \"date\": \"2023-05-19\",\n            \"totalItems\": 1,\n            \"totalEvents\": 0,\n            \"totalGames\": 1,\n            \"totalMatches\": 0,\n            \"games\": [\n                {\n                    \"gamePk\": 2022030321,\n                    \"link\": \"/api/v1/game/2022030321/feed/live\",\n                    \"gameType\": \"P\",\n                    \"season\": \"20222023\",\n                    \"gameDate\": \"2023-05-20T00:30:00Z\",\n                    \"status\": {\n                        \"abstractGameState\": \"Preview\",\n                        \"codedGameState\": \"1\",\n                        \"detailedState\": \"Scheduled\",\n                        \"statusCode\": \"1\",\n                        \"startTimeTBD\": false\n                    },\n                    \"teams\": {\n                        \"away\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 5,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 25,\n                                \"name\": \"Dallas Stars\",\n                                \"link\": \"/api/v1/teams/25\"\n                            }\n                        },\n                        \"home\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 3,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 54,\n                                \"name\": \"Vegas Golden Knights\",\n                                \"link\": \"/api/v1/teams/54\"\n                            }\n                        }\n                    },\n                    \"venue\": {\n                        \"id\": 5178,\n                        \"name\": \"T-Mobile Arena\",\n                        \"link\": \"/api/v1/venues/5178\"\n                    },\n                    \"content\": {\n                        \"link\": \"/api/v1/game/2022030321/content\"\n                    }\n                },\n                {\n                    \"gamePk\": 2022030322,\n                    \"link\": \"/api/v1/game/2022030322/feed/live\",\n                    \"gameType\": \"P\",\n                    \"season\": \"20222023\",\n                    \"gameDate\": \"2023-05-20T00:30:00Z\",\n                    \"status\": {\n                        \"abstractGameState\": \"Preview\",\n                        \"codedGameState\": \"1\",\n                        \"detailedState\": \"Scheduled\",\n                        \"statusCode\": \"1\",\n                        \"startTimeTBD\": false\n                    },\n                    \"teams\": {\n                        \"away\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 5,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 25,\n                                \"name\": \"Dallas Stars\",\n                                \"link\": \"/api/v1/teams/25\"\n                            }\n                        },\n                        \"home\": {\n                            \"leagueRecord\": {\n                                \"wins\": 8,\n                                \"losses\": 3,\n                                \"type\": \"league\"\n                            },\n                            \"score\": 0,\n                            \"team\": {\n                                \"id\": 54,\n                                \"name\": \"Vegas Golden Knights\",\n                                \"link\": \"/api/v1/teams/54\"\n                            }\n                        }\n                    },\n                    \"venue\": {\n                        \"id\": 5178,\n                        \"name\": \"T-Mobile Arena\",\n                        \"link\": \"/api/v1/venues/5178\"\n                    },\n                    \"content\": {\n                        \"link\": \"/api/v1/game/2022030321/content\"\n                    }\n                }\n            ],\n            \"events\": [],\n            \"matches\": []\n        }\n    ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "result",
+              "value": "2",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "f0d869be-1a2a-4e4b-be21-fc834986eedb",
+          "body": "{\n    \"copyright\": \"NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. © NHL 2023. All Rights Reserved.\",\n    \"totalItems\": 1,\n    \"totalEvents\": 0,\n    \"totalGames\": 1,\n    \"totalMatches\": 0,\n    \"metaData\": {\n        \"timeStamp\": \"20230519_231930\"\n    },\n    \"wait\": 10,\n    \"dates\": [\n        {\n            \"date\": \"2023-05-19\",\n            \"totalItems\": 1,\n            \"totalEvents\": 0,\n            \"totalGames\": 1,\n            \"totalMatches\": 0,\n            \"games\": [],\n            \"events\": [],\n            \"matches\": []\n        }\n    ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "result",
+              "value": "0",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "ba6886c3-2958-4158-a85a-d93a726ff09d",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "v1/metadata",
+      "responses": [
+        {
+          "uuid": "f35f4ec9-5cea-417d-b4e8-7e600153b039",
+          "body": "{\n  \"status\": \"Ok\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "7f3fcfec-bd5a-4849-95ed-affc80ce88b9"
+    },
+    {
+      "type": "route",
+      "uuid": "ba6886c3-2958-4158-a85a-d93a726ff09d"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": []
+}

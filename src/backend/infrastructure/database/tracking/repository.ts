@@ -1,6 +1,6 @@
-import { Game } from "../../../model/nhl/schedule.js";
-import { sequelize } from "../static/data.js";
-import { LiveEventRecord } from "../../../model/data/common/live_event.js";
+import { Game } from "../../../model/nhl/schedule";
+import { sequelize } from "../static/data";
+import { LiveEventRecord } from "../../../model/data/common/live_event";
 
 /**
  * Upsert scheduled event (game).

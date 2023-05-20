@@ -1,5 +1,14 @@
 version: '3.6'
 services:
+  mockoon:
+    image: mockoon/cli:latest
+    command: ["--data", "data", "--port", "3000"]
+    networks:
+      backend:
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+    - ./tests/mock/nhl_mock.json:/data:readonly
   postgres:
     image: postgres
     environment:

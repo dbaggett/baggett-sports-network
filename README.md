@@ -25,7 +25,6 @@ Basically just repeat the steps in `run.sh` (minus the healtcheck logic).
     docker-compose -f docker-compose-e2e.yaml up
     ```
 2) From the `src/backend` directory, create the cron triggers
-       ```
    * Queued event extractor:
        ```
        curl -d @./infrastructure/hasura/triggers/event_check.json  -H 'Content-Type: application/json' localhost:8080/v1/metadata
@@ -63,9 +62,13 @@ The database is made available to the host at port `5432`. Check the docker-comp
 ## Hasura
 Hasura is used as an event scheduler and provides a GraphQL interface for the ingested data. It's available at http://localhost:8080. An embedded GraphiQL editor awaits.
 
-Note: The table metadata located at `/infrastructure/hasura/tables/metadata.json` must be applied to execute GraphQL queries. Done for you when executing the run script.
+Note: The table metadata located at `/infrastructure/hasura/tables/metadata.json` must be applied to execute GraphQL queries. Done for you when executing the `run.sh` script.
 
-## Example for fetching scores for Live games
+## Example Queries
+_Data may very depending on information ingested._
+
+### Live Game Scores
+_Create a subscription to have your own score ticker._
 ```
 {
   tracking_event(where: {status: {_eq: "Live"}}) {
@@ -82,4 +85,60 @@ Note: The table metadata located at `/infrastructure/hasura/tables/metadata.json
 }
 ```
 
-TODO: List more useful queries
+### Listing Teams
+```
+{
+  tracking_team {
+    name
+  }
+}
+```
+
+### Listing Players and their respective teams
+```
+{
+  tracking_player {
+    name
+    team_player_xrefs {
+      team {
+        name
+      }
+    }
+  }
+}
+```
+
+### Player Game Stats
+```
+{
+  tracking_player(where: {team_player_xrefs: { team_player_game_stats: { event_reference_number: { _eq: "2022030171" } }}}) {
+    name
+    team_player_xrefs {
+      team_player_game_stats {
+        stats
+        event_reference_number
+      }
+    }
+  }
+}
+```
+
+### Player Team Stats per Game
+```
+{
+  tracking_player(where: {team_player_xrefs: { team: { name: { _eq: "Winnipeg Jets" } }}}) {
+    name
+    team_player_xrefs {
+      team {
+        name
+      }
+      team_player_game_stats {
+        event_reference_number
+        stats
+      }
+    }
+  }
+}
+```
+
+OR, create your own.

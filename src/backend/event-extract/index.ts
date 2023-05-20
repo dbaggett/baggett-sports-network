@@ -1,11 +1,9 @@
 import got from 'got'
-import { LiveGame, PlayerStats } from '../model/nhl/game.js'
-import { TeamPlayers } from '../model/nhl/game.js';
-import { BoxScoreTeam } from '../model/nhl/game.js';
-import { upsertLiveEventRecord } from '../infrastructure/database/tracking/repository.js';
-import { LiveEventRecord } from '../model/data/common/live_event.js';
-import { removeQueuedEvent } from '../infrastructure/database/tracking/repository.js';
-import { setScheduledEvent } from '../infrastructure/hasura/api/metadata.js';
+import { LiveGame, PlayerStats, TeamPlayers, BoxScoreTeam } from '../model/nhl/game'
+import { upsertLiveEventRecord } from '../infrastructure/database/tracking/repository';
+import { LiveEventRecord } from '../model/data/common/live_event';
+import { removeQueuedEvent } from '../infrastructure/database/tracking/repository';
+import { setScheduledEvent } from '../infrastructure/hasura/api/metadata';
 
 export async function extractEventData(eventId: string, league: string, isQueued: boolean = false) {
   if (league == 'NHL') {

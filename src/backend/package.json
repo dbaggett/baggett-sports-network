@@ -4,8 +4,9 @@
   "description": "Backend processes for BSPN data collection",
   "main": "index.js",
   "scripts": {
+    "start": "npx ts-node localServer.ts",
     "build": "tsc --build",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --detectOpenHandles"
   },
   "author": "Danny Baggett <danny.h.baggett@gmail.com>",
   "license": "ISC",

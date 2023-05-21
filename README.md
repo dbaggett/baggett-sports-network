@@ -65,7 +65,7 @@ Hasura is used as an event scheduler and provides a GraphQL interface for the in
 Note: The table metadata located at `/infrastructure/hasura/tables/metadata.json` must be applied to execute GraphQL queries. Done for you when executing the `run.sh` script.
 
 ## Example Queries
-_Data may very depending on information ingested._
+_Data may vary depending on information ingested._
 
 ### Live Game Scores
 _Create a subscription to have your own score ticker._

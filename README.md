@@ -3,7 +3,7 @@ Taking the __BS__ out of sports, well... just hockey for the moment.
 
 ## Requirements
 * Docker
-* *nix system (make things easier)
+* *nix system (makes things a little easier)
 
 ## Technology
 * TypeScript - language
@@ -32,6 +32,30 @@ Basically just repeat the steps in `run.sh` (minus the healtcheck logic).
     
 Run `docker-compose -f docker-compose-e2e.yaml down` to stop the containers, if necessary.
 
+## Testing
+`npm run test`
+
+_Basic integration tests setup using Testcontainers. A __WIP__ as setup time is environment bound currently._
+
+## Logs
+Logs can be viewed by watching the BSPN API container.
+
+```docker logs --follow backend-bspn-api-1```
+
+### Notable Logs
+
+#### Server Started Log
+```server started at http://localhost:8020```
+
+#### Queued Event Scheduled Run
+```Extracting data for {number} events```
+
+#### Schedule Check (current)
+```
+Upserting scheduled event {event_id}
+Setting scheduled event trigger for event: {event_id}
+```
+
 ## Checking the Schedule
 The most common use case is to monitor the live schedule which can be done via a POST to `/schedule-check`. This will set up a scheduled event
 to monitor the scheduled events, if any.
@@ -58,6 +82,9 @@ The database is made available to the host at port `5432`. Check the docker-comp
 * `event_participant` - holds teams in a game
 * `team` - team information
 * `player` - player information
+* `team_player_xref` - links team and player (many-to-many)
+* `team_player_game_stats` - game stats for player on a specific team
+* `event_queue` - holds games queued for scheduled ingest
 
 ## Hasura
 Hasura is used as an event scheduler and provides a GraphQL interface for the ingested data. It's available at http://localhost:8080. An embedded GraphiQL editor awaits.

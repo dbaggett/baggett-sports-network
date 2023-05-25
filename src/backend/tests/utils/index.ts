@@ -11,7 +11,7 @@ export async function createContainers(): Promise<StartedDockerComposeEnvironmen
       composeFile
     ]
   )
-  .withWaitStrategy("migration-1", Wait.forLogMessage('A Flyway report has been generated here: report.html'))
+  .withWaitStrategy("migration-1", Wait.forLogMessage('A Flyway report has been generated here'))
 
   return await environment.up()
 }

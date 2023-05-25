@@ -13,7 +13,7 @@ beforeAll(async () => {
   environment = await createContainers()
   db = environment.getContainer('postgres-1')
   mockoon = environment.getContainer('mockoon-1')
-}, 60000)
+}, 180000)
 
 /**beforeEach(async () => {
   const result = await truncateTables()

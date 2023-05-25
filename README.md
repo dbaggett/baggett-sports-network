@@ -3,6 +3,7 @@ Taking the __BS__ out of sports, well... just hockey for the moment.
 
 ## Requirements
 * Docker
+* docker-compose
 * *nix system (makes things a little easier)
 
 ## Technology
